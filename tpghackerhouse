@@ -1,0 +1,45 @@
+//SPDX-License-Identifier:GPL 3.0
+
+pragma solidity 0.8.17;
+
+//Sender Address points to transaction structure array
+//if possible front end
+//-put all transactions(the structure array) to a file for storing with ipfs - https://soliditydeveloper.com/ipfs
+//-try to get two contracts to work together or type different contract into the same file.
+
+contract accounting{
+    struct transaction{
+        uint serNo;
+        address recieve;
+        uint amount;
+    }
+
+    address owner=0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
+    
+    modifier hasAccess{
+        require(msg.sender==owner,"Not Authorised");
+        _;
+    }
+    transaction[] private arr ;
+    transaction public elm;
+    function checker(uint i)public hasAccess{
+         OwnerConfirmed(i);
+    }
+    function OwnerConfirmed(uint i)private{
+        elm=arr[i];
+    }
+    uint serialNo=0;
+    
+    mapping(address=>transaction[]) transactionNum;
+    //Gets transaction inputs
+    // Function address is key, mapping to the transaction info of dat employee.
+
+    function recordTransaction(address rec, uint money)public {
+
+        arr.push(transaction(serialNo,rec,money));
+        serialNo+=1;
+    }
+
+    
+    
+}
